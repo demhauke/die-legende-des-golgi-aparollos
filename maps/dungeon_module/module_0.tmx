@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="7" height="7" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="1">
+ <editorsettings>
+  <export target="module_0/module_0.csv" format="csv"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../TX Tileset Grass.tsx"/>
+ <tileset firstgid="17" source="../_down idle.tsx"/>
+ <tileset firstgid="25" source="../TX Props_2.tsx"/>
+ <tileset firstgid="89" source="../TX Struct.tsx"/>
+ <tileset firstgid="153" source="../TX Plant.tsx"/>
+ <tileset firstgid="217" source="../TX Tileset Wall_2.tsx"/>
+ <tileset firstgid="281" source="../pfeile.tsx"/>
+ <layer id="10" name="leere" width="7" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="Grass" width="7" height="7">
+  <data encoding="csv">
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,
+1,1,1,1,1,1,1
+</data>
+ </layer>
+ <layer id="2" name="Wall obenunten" width="7" height="7">
+  <data encoding="csv">
+233,233,233,0,233,233,233,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+249,249,249,0,249,249,249
+</data>
+ </layer>
+ <layer id="3" name="Wall linksrechts" width="7" height="7">
+  <data encoding="csv">
+221,0,0,0,0,0,222,
+221,0,0,0,0,0,222,
+221,0,0,0,0,0,222,
+0,0,0,0,0,0,0,
+221,0,0,0,0,0,222,
+221,0,0,0,0,0,222,
+221,0,0,0,0,0,222
+</data>
+ </layer>
+ <layer id="6" name="Struct" width="7" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Props" width="7" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="Plant" width="7" height="7">
+  <data encoding="csv">
+0,153,154,0,153,0,0,
+0,161,162,0,161,162,0,
+0,169,170,0,169,170,0,
+0,153,0,0,0,153,0,
+0,161,162,0,0,161,162,
+0,169,170,0,0,169,170,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Player" width="7" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,17,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="9" name="pfeile" width="7" height="7">
+  <data encoding="csv">
+0,0,0,283,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+281,0,0,0,0,0,282,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,284,0,0,0
+</data>
+ </layer>
+</map>
