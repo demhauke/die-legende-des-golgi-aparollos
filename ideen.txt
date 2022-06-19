@@ -1,0 +1,12 @@
+    -Top off RPG Game 
+    -Man muss gegen gegner kämpfen
+    -wie zelda
+
+
+    -sprites sind random
+    -level module sind random
+
+    
+    -wahrscheinlich angriff mit maus oder Pfeiltasten ne mit space
+    -bewegen mit WASD
+    
