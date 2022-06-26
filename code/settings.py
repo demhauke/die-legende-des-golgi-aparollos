@@ -25,3 +25,22 @@ TEXT_COLOR = '#EEEEEE'
 HP_COLOR = 'red'
 ENERGY_COLOR = 'blue'
 UI_BORDER_COLOR_ACTIVE = 'gold'
+
+# weapons
+# weapon_data = {
+#     'swort': {},
+#     'lance': {},
+#     'axe': {},
+#     'rapier': {},
+#     'sai': {}
+# }
+
+weapon_data = {
+    'swort': {'cooldown': 300, 'damage': 20, 'graphic': 'graphics\weapons\swort.png'},
+}
+
+# enemy
+monster_data = {
+    '1': {'health': 100, 'exp': 100, 'damage': 10, 'attack_type': '...', 'attack_sound': '', 'speed': 3, 'resistance': 3, 'attack_radius': 80, 'notice_radius': 360}
+}
+

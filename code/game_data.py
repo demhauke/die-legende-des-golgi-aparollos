@@ -8,6 +8,7 @@ level_0 = {
     'Props' : 'maps\level_0\level_0_Props.csv',
     'Plant' : 'maps\level_0\level_0_Plant.csv',
     'player' : 'maps\level_0\level_0_Player.csv', 
+    'enemies' : 'maps\level_0\level_0_enemies.csv',
     'pfeile' : 'maps\level_0\level_0_pfeile.csv'
 }
 first_room = {
@@ -31,6 +32,7 @@ room_template = {
     'Struct' : 'maps\dungeon_module\module_0\module_0_Struct.csv',
     'Props' : 'maps\dungeon_module\module_0\module_0_Props.csv',
     'player' : 'maps\dungeon_module\module_0\module_0_Player.csv',
+    'enemies' : 'maps\dungeon_module\module_0\module_0_enemies.csv',
     'pfeile' : 'maps\dungeon_module\module_0\module_0_pfeile.csv',
     'leere' : 'maps\dungeon_module\module_0\module_0_leere.csv'
 }
