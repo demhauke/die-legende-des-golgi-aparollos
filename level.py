@@ -3,12 +3,14 @@ from itertools import count
 from re import S
 from tkinter.tix import Tree
 import pygame
+from enemy import Enemy
 from ui import UI
 from sprites import * 
+from player import * 
 from settings import *
 from support import *
-from debug import debug
-from random_level import *
+from weapon import *
+from game_data import *
 
 class Level:
     def __init__(self, level_data, random=None):
@@ -18,8 +20,6 @@ class Level:
         
         self.visable_sprites = YSortCamaraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
-        self.all_sprites = pygame.sprite.Group()
-        self.player_sprite = pygame.sprite.Group()
 
         self.level_data = level_data
 
@@ -61,6 +61,7 @@ class Level:
             'Props' : room_template['Props'],
             'Plant' : room_template['Plant'],
             'player' : room_template['leere'],
+            'enemies' : room_template['leere']
         }
 
         # room = first_room
@@ -79,6 +80,7 @@ class Level:
             'Props' : room_template['Props'],
             'Plant' : random.choice((room_template['Plant'], room_template['leere'])),
             'player' : room_template['leere'],
+            'enemies' : room_template['leere']
             }
 
             # direction = (left, right, up, down)
@@ -209,12 +211,12 @@ class Level:
             'Props' : room_template['leere'],
             'Plant' : room_template['leere'],
             'player' : room_template['player'],
+            'enemies' : room_template['leere']
         }
         self.create_map(room, (0,0))
 
-
-        # self.create_map(first_room)
-        # self.create_map(first_room, pos=(0, 1))
+    def create_attack(self):
+        Weapon(self.player, [self.visable_sprites])
 
     def create_map(self, level_data, pos=(0, 0), direction=(False, False, False, False)):
         sprite_group = pygame.sprite.Group()
@@ -226,6 +228,7 @@ class Level:
             'Props': import_csv_layout(level_data['Props']),
             'Plant': import_csv_layout(level_data['Plant']),
             'player': import_csv_layout(level_data['player']),
+            'enemies': import_csv_layout(level_data['enemies']),
             'pfeile': import_csv_layout(level_data['pfeile'])
         }
         graphics = {
@@ -282,7 +285,6 @@ class Level:
                                     if val == '3':
                                         WnU_WandnachUnten((x, y), [self.visable_sprites, self.obstacle_sprites])
 
-
                         if style == 'Struct':
                             if val == '4':
                                 Tor((x, y), [self.visable_sprites, self.obstacle_sprites])
@@ -293,9 +295,11 @@ class Level:
                             if val == '16':
                                 Baum((x, y), [self.visable_sprites])
 
+                        if style == 'enemies':
+                            Enemy('Hallo', (x, y), [self.visable_sprites], self.obstacle_sprites)
 
                         if style == 'player':
-                            self.player = Player((x, y), [self.visable_sprites], self.obstacle_sprites)     
+                            self.player = Player((x, y), [self.visable_sprites], self.obstacle_sprites, self.create_attack)     
 
     def run(self):
         self.visable_sprites.custom_draw(self.player)
