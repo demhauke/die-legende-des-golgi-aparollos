@@ -1,7 +1,4 @@
-import imp
-from itertools import count
 from re import S
-from tkinter.tix import Tree
 import pygame
 from enemy import Enemy
 from ui import UI
@@ -15,11 +12,14 @@ from game_data import *
 class Level:
     def __init__(self, level_data, random=None):
 
-        # get the display surface
         self.display_surface = pygame.display.get_surface()
         
         self.visable_sprites = YSortCamaraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
+
 
         self.level_data = level_data
 
@@ -32,25 +32,7 @@ class Level:
 
         self.ui = UI()
 
-    def create_random_map(self, max_rooms=5):
-        count = 0
-        x = 0
-        y = 0
-
-        position_list = []
-
-        left = False
-        right = False
-        up = True
-        down = False
-
-        visuel_left = False
-        visuel_right = False
-        visuel_up = True
-        visuel_down = False
-
-        direction = (False, False, True, False)
-        visual_direction = (left, right, up, down)
+    def create_random_map(self, max_rooms=20):
 
         room = {
             'Grass' : room_template['Grass'],
@@ -63,144 +45,60 @@ class Level:
             'player' : room_template['leere'],
             'enemies' : room_template['leere']
         }
+        map_direction = (True, True, True, True)
 
-        # room = first_room
+        count = 0
 
-        self.create_map(room, (x,y), visual_direction)
-        position_list.append((x, y))
+        x = 0
+        y = 0
 
-        while count < max_rooms - 1:
+        pos_log = []
 
-            room = {
-            'Grass' : room_template['Grass'],
-            'Wall_up' : room_template['Wall_up'],
-            'Wall_leftright' : room_template['Wall_leftright'],
-            'pfeile' : room_template['pfeile'],
-            'Struct' : room_template['Struct'],
-            'Props' : room_template['Props'],
-            'Plant' : random.choice((room_template['Plant'], room_template['leere'])),
-            'player' : room_template['leere'],
-            'enemies' : room_template['leere']
-            }
+        diretion = random.choice(['left', 'right', 'up', 'down'])
 
-            # direction = (left, right, up, down)
+        while max_rooms > count:
+            possible_directions = []
 
-            # self.create_map(room, (x,y), visual_direction)
+            self.create_map(room, (x, y), map_direction)
+            pos_log.append([x, y])
 
-            for index, val in enumerate(direction):
-                if val == True:
-                    if index == 0:
-                        #left = True
-                        x += -1
-                        visuel_right = True
+            for pos in pos_log:
+                print(pos)
 
-                    if index == 1:
-                        #right = True
-                        x += 1
-                        visuel_left = True
+                if pos != [x, y] + pygame.math.Vector2(1, 0):
+                    possible_directions.append('right')
 
-                    if index == 2:
-                        #up = True
-                        y += -1
-                        visuel_down = True
+                if pos != [x, y] + pygame.math.Vector2(-1, 0):
+                    possible_directions.append('left')
 
-                    if index == 3:
-                        #down = True
-                        y += 1
-                        visuel_up = True
-                else:
-                    if index == 0:
-                        #left = False
-                        visuel_right = False
+                if pos != [x, y] + pygame.math.Vector2(0, 1):
+                    possible_directions.append('down')
 
-                    if index == 1:
-                        #right = False
-                        visuel_left = False
-
-                    if index == 2:
-                        #up = False
-                        visuel_down = False
-
-                    if index == 3:
-                        #down = False
-                        visuel_up = False
-
-            for pos in position_list:
+                if pos != [x, y] + pygame.math.Vector2(0, -1):
+                    possible_directions.append('up')
                 
-                posible_directions = []
+            print(possible_directions)
+            diretion = random.choice(possible_directions)
+            print(diretion)
 
-                if not (x + 1, y) == pos:
-                    posible_directions.append('right')
+            if diretion == 'right':
+                x += 1
 
-                if not (x - 1, y) == pos:
-                    posible_directions.append('left')
+            if diretion == 'left':
+                x -= 1
 
-                if not (x, y + 1) == pos:
-                    posible_directions.append('down')
+            if diretion == 'down':
+                y += 1
 
-                if not (x, y - 1) == pos:
-                    posible_directions.append('up')
+            if diretion == 'up':
+                y -= 1
 
+            
 
-            if count != max_rooms -2:
-                if visuel_down == True:
-                    down = False
-                    visual_next = random.choice(('up', 'left', 'right'))
-
-                if visuel_up == True:
-                    up = False
-                    visual_next = random.choice(('down', 'left', 'right'))
-
-                if visuel_left == True:
-                    left = False
-                    visual_next = random.choice(('up', 'down', 'right'))
-
-                if visuel_right == True:
-                    right = False
-                    visual_next = random.choice(('up', 'down', 'left'))
-
-                visual_next = random.choice(posible_directions)
-
-
-                if visual_next == 'left':
-                    left = True
-                    visuel_left = True
-                    direction = (True, False, False, False)
-
-                if visual_next == 'right':
-                    right = True
-                    visuel_right = True
-                    direction = (False, True, False, False)
-
-                if visual_next == 'up':
-                    up = True
-                    visuel_up = True
-                    direction = (False, False, True, False)
-
-                if visual_next == 'down':
-                    down = True
-                    visuel_down = True
-                    direction = (False, False, False, True)
-
-            visual_direction = (visuel_left, visuel_right, visuel_up, visuel_down)
-            self.create_map(room, (x,y), visual_direction)
-            position_list.append((x, y))
-
-
-            # direction = (random.choice((True, False)), random.choice((True, False)), random.choice((True, False)), random.choice((True, False)),)
-
-            # room['player'] = room['null']
-            player = False
-
-            # if random.choice(('x', 'y')) == 'x':
-            #     x += random.choice((-1, 1))
-            # else:
-            #     y += random.choice((-1, 1))
 
             count += 1
 
-        print(position_list)
-
+        print(pos_log)
 
         room = {
             'Grass' : room_template['leere'],
@@ -213,12 +111,9 @@ class Level:
             'player' : room_template['player'],
             'enemies' : room_template['leere']
         }
-        self.create_map(room, (0,0))
+        self.create_map(room, (0, 0))
 
-    def create_attack(self):
-        Weapon(self.player, [self.visable_sprites])
-
-    def create_map(self, level_data, pos=(0, 0), direction=(False, False, False, False)):
+    def create_map(self, level_data, pos=(0, 0), direction=(False, False, True, False)):
         sprite_group = pygame.sprite.Group()
         layouts = {
             'Grass': import_csv_layout(level_data['Grass']),
@@ -296,14 +191,33 @@ class Level:
                                 Baum((x, y), [self.visable_sprites])
 
                         if style == 'enemies':
-                            Enemy('Hallo', (x, y), [self.visable_sprites], self.obstacle_sprites)
+                            Enemy((x, y), [self.visable_sprites, self.attackable_sprites], self.obstacle_sprites, self.damage_player)
 
                         if style == 'player':
                             self.player = Player((x, y), [self.visable_sprites], self.obstacle_sprites, self.create_attack)     
 
+    def create_attack(self):
+        Weapon(self.player, [self.visable_sprites, self.attack_sprites])
+
+    def player_attack_logic(self):
+        if self.attack_sprites:
+            for attack_sprite in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
+                if collision_sprites:
+                    for target_sprite in collision_sprites:
+                        target_sprite.get_damage(self.player, attack_sprite.type)
+
+    def damage_player(self, amount, attack_type):
+        if self.player.vulnerable:
+            self.player.hp -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+
     def run(self):
         self.visable_sprites.custom_draw(self.player)
         self.visable_sprites.update()
+        self.visable_sprites.enemy_update(self.player)
+        self.player_attack_logic()
         self.ui.display(self.player)
 
 class YSortCamaraGroup(pygame.sprite.Group):
@@ -345,10 +259,7 @@ class YSortCamaraGroup(pygame.sprite.Group):
         
         # self.display_surface.blit(scaled_surf, scaled_rect)
 
-    def zoom_keyboard_control(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
-            self.zoom_scale += 0.1
-        if keys[pygame.K_e]:
-            if self.zoom_scale >= 0.55:
-                self.zoom_scale -= 0.1
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
