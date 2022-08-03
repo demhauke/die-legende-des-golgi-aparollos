@@ -25,11 +25,6 @@ class UI:
         # draw the bar
         pygame.draw.rect(self.display_surface, color, current_rect)
 
-    def draw_button(self, color, rect, text=''):
-        
-        pygame.draw.rect(self.display_surface, color, rect)
-
-
 
     def display(self, player):
         self.show_bar(player.hp, player.stats['hp'], self.hp_bar_rect, HP_COLOR)

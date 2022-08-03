@@ -20,11 +20,10 @@ class Game:
         intro_screen = True
         grass = pygame.sprite.Group()
 
-        play_button = button(self.screen.get_width() / 2 - 3 * TILESIZE, self.screen.get_height() / 2, 6 * TILESIZE, TILESIZE, 'Starte Spiel')
+        play_button = button((self.screen.get_width() / 2 - 3 * TILESIZE, self.screen.get_height() / 2),'Starte Spiel ')
 
-        random_dungeon_button = button(self.screen.get_width() / 2 - 3 * TILESIZE, self.screen.get_height() / 2 + 2 * TILESIZE, 6 * TILESIZE, TILESIZE, 'random Level')
+        random_dungeon_button = button((self.screen.get_width() / 2 - 3 * TILESIZE, self.screen.get_height() / 2 + 2 * TILESIZE),'random Level')
 
-        # (109, 219, 62) (35, 100, 0)
         for row_index, row in enumerate(import_csv_layout(level_0['Grass'])):
                 for col_index, val in enumerate(row):
                     if val != '-1':
@@ -70,13 +69,6 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 
-                # if event.type == pygame.MOUSEWHEEL:
-                #     if self.level.visable_sprites.zoom_scale <= 0.55:
-                #         if event.y > 0:
-                #             self.level.visable_sprites.zoom_scale += event.y * 0.05
-                #     else:
-                #         self.level.visable_sprites.zoom_scale += event.y * 0.05
-   
             if self.type == 'start_screen':
                 self.start_screen()
             else:
@@ -84,6 +76,7 @@ class Game:
                 self.level.run()
                 pygame.display.update()
                 self.clock.tick(FPS)
+
  
 if __name__ == '__main__':
     game = Game()

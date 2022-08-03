@@ -29,6 +29,7 @@ class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, create_attack):
         super().__init__(groups)
 
+        self.sprite_type = 'player'
 
         self.idle_down = Playerspritesheet('graphics\main character\_down idle.png')
         self.idle_up = Playerspritesheet('graphics\main character\_up idle.png')
@@ -65,16 +66,19 @@ class Player(Entity):
 
         self.obstacle_sprites = obstacle_sprites
 
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerablity_duration = 500
 
         # stats
         self.stats = {
             'hp': 100,
             'energy': 60,
+            'attack': 10,
             'speed': 5,
             'energy_regen': 2
-
         }
-            # current stats
+        # current stats
         self.hp = self.stats['hp']
         self.energy = self.stats['energy']
         self.energy_regen = self.stats['energy_regen']
@@ -134,6 +138,10 @@ class Player(Entity):
         if self.running == True:
             self.energy -= 3
 
+    def check_death(self):
+        if self.hp <= 0:
+            self.kill()
+
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
 
@@ -144,6 +152,10 @@ class Player(Entity):
         if self.damaging:
             if current_time - self.attack_time >= self.damage_cooldown:
                 self.damaging = False
+
+        if not self.vulnerable:
+            if current_time - self.hurt_time >= self.invulnerablity_duration:
+                self.vulnerable = True
 
     def animations(self, direction, facing):
         idle = True
@@ -257,9 +269,15 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+    def get_full_weapon_damage(self):
+        base_damage = self.stats['attack']
+        weapon_damage = weapon_data[self.weapon]['damage']
+        return base_damage + 0
+
     def update(self):
         self.input()
         self.energy_managemant()
         self.cooldowns()
         self.move(self.speed)
         self.animations(self.direction, self.facing)
+        self.check_death()

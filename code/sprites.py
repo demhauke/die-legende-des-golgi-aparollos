@@ -4,12 +4,13 @@ import math
 from settings import *
 
 class button():
-    def __init__(self, x,y,width,height, text='', color = 'gray'):
+    def __init__(self, pos, text='', color = 'gray', font_size = 60):
         self.color = color
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        self.font_size = font_size
+        self.x = pos[0]
+        self.y = pos[1]
+        self.width = len(list(text)) * self.font_size / 2
+        self.height = self.font_size
         self.text = text
 
     def draw(self,win,outlinecolor=None, border = 5):
@@ -20,7 +21,7 @@ class button():
         pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
         
         if self.text != '':
-            font = pygame.font.SysFont('comicsans', 60)
+            font = pygame.font.SysFont('comicsans', self.font_size)
             text = font.render(self.text, 1, (0,0,0))
             win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
 
@@ -49,13 +50,11 @@ class Hitbox(pygame.sprite.Sprite):
         self.hitbox = pygame.Rect(pos, width_height)
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, image = pygame.Surface((TILESIZE, TILESIZE))):
+    def __init__(self, groups):
         super().__init__(groups)
-        self.image = image
-        self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0, -10)
+        self.sprite_type = 'Tile'
 
-class Grass(pygame.sprite.Sprite):
+class Grass(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -65,7 +64,7 @@ class Grass(pygame.sprite.Sprite):
         self.image = random.choice(self.image_list)
         self.rect = self.image.get_rect(topleft = pos)
 
-class Baum(pygame.sprite.Sprite):
+class Baum(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -78,8 +77,7 @@ class Baum(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft = (pos[0], pos[1] - 2 * TILESIZE))
             self.hitbox = self.rect
 
-
-class SnO_StraßenachOben(pygame.sprite.Sprite):
+class SnO_StraßenachOben(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -88,7 +86,7 @@ class SnO_StraßenachOben(pygame.sprite.Sprite):
         self.image = random.choice(self.image_list)
         self.rect = self.image.get_rect(topleft = pos)
 
-class SnS_StraßenachSeite(pygame.sprite.Sprite):
+class SnS_StraßenachSeite(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -97,7 +95,7 @@ class SnS_StraßenachSeite(pygame.sprite.Sprite):
         self.image = random.choice(self.image_list)
         self.rect = self.image.get_rect(topleft = pos)
 
-class Straße(pygame.sprite.Sprite):
+class Straße(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -106,7 +104,7 @@ class Straße(pygame.sprite.Sprite):
         self.image = random.choice(self.image_list)
         self.rect = self.image.get_rect(topleft = pos)
 
-class WnO_Wandnachoben(pygame.sprite.Sprite):
+class WnO_Wandnachoben(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -117,7 +115,7 @@ class WnO_Wandnachoben(pygame.sprite.Sprite):
         # self.hitbox = self.rect.inflate(0, -40)
         self.hitbox = pygame.Rect(pos, (TILESIZE, TILESIZE -25))
 
-class WnU_WandnachUnten(pygame.sprite.Sprite):
+class WnU_WandnachUnten(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -127,7 +125,7 @@ class WnU_WandnachUnten(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = pygame.Rect(pos[0], pos[1] + TILESIZE - 10, TILESIZE, 10)
 
-class WnL_WandnachLinks(pygame.sprite.Sprite):
+class WnL_WandnachLinks(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -137,7 +135,7 @@ class WnL_WandnachLinks(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = pygame.Rect(pos, (8, TILESIZE))
 
-class WnR_WandnachRechts(pygame.sprite.Sprite):
+class WnR_WandnachRechts(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -147,7 +145,7 @@ class WnR_WandnachRechts(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = pygame.Rect(pos[0] + TILESIZE - 8, pos[1], 8, TILESIZE)
 
-class Door(pygame.sprite.Sprite):
+class Door(Tile):
     def __init__(self, pos, groups, level, type = 'close'):
         super().__init__(groups)
 
@@ -178,7 +176,7 @@ class Door(pygame.sprite.Sprite):
         self.collide_player(self.level.player)
         self.draw()
 
-class Tor(pygame.sprite.Sprite):
+class Tor(Tile):
     def __init__(self, pos, groups):
         super().__init__(groups)
 
@@ -188,7 +186,7 @@ class Tor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = pygame.Rect(pos, (TILESIZE, TILESIZE -25))
 
-class TnO_TreppenachOben(pygame.sprite.Sprite):
+class TnO_TreppenachOben(Tile):
     def __init__(self, pos, groups, level):
         super().__init__(groups)
 
@@ -203,9 +201,10 @@ class TnO_TreppenachOben(pygame.sprite.Sprite):
         Hitbox((pos[0], pos[1]), self.level.obstacle_sprites, (1, 1.5 * TILESIZE))
         Hitbox((pos[0] + TILESIZE, pos[1]), self.level.obstacle_sprites, (1, 1.5 * TILESIZE))
 
-class Tk_Tempelkreis(pygame.sprite.Sprite):
+class Tk_Tempelkreis(Tile):
     def __init__(self, pos, groups, level):
         super().__init__(groups)
+
 
         self.level = level
 
@@ -218,12 +217,38 @@ class Tk_Tempelkreis(pygame.sprite.Sprite):
         self.hitbox = self.rect
 
     def player_collide(self):
-        if self.level.player.hitbox.colliderect(self.hitbox): 
-            print('collide')
+        if random.randint(1, 100) >= 95:
+            if self.level.player.hitbox.colliderect(self.hitbox): 
+                print('collide')
 
-            # if self.level.ui.draw_button()
+                x = random.randint(self.rect.x, self.rect.x + self.width)
+                y = random.randint(self.rect.y, self.rect.y + self.height)
+
+                # if self.level.ui.draw_button()
+                create_particles((x, y), [self.level.visable_sprites])
 
 
     def update(self):
         self.player_collide()
 
+
+class create_particles(Tile):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+
+        self.sheet = Spritesheet('graphics\particles.png')
+
+        self.particle_list = (self.sheet.get_sprite(5 * 3, 0, 5, 12), self.sheet.get_sprite(5 * 2, 0, 10, 12), self.sheet.get_sprite(5, 0, 5, 26), self.sheet.get_sprite(0, 0, 5, 40))
+        self.index = 0
+
+        self.image = self.particle_list[self.index]
+        self.rect = self.image.get_rect(topleft = pos)
+
+    def update(self):
+        self.image = self.particle_list[int(self.index)]
+        self.index += 0.02
+
+        self.rect.y -= 1
+
+        if int(self.index) == len(self.particle_list):
+            self.kill()
